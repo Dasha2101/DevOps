@@ -22,12 +22,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd devOps
+          cd Front
           npm install
 
       - name: Build project
         run: |
-          cd devOps
+          cd Front
           npm run build
 
   test:
@@ -45,10 +45,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd devOps
+          cd Front
           npm install
 
       - name: Run tests
         run: |
-          cd devOps
+          cd Front
           npx vitest run --coverage
