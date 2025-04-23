@@ -52,7 +52,7 @@ def upgrade() -> None:
 
     op.execute("""
     INSERT INTO users (username, password)
-    VALUES ('doctor', '$2b$12$uo6npZXjSXdil30RTr1FQ.v1IeJzquHxwryqMMZJxAu/MCN.EnZNa')
+    VALUES ('Doctor', '$2b$12$uo6npZXjSXdil30RTr1FQ.v1IeJzquHxwryqMMZJxAu/MCN.EnZNa')
     """)
 
     op.create_table('report',

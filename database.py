@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
-URL = "postgresql+psycopg2://postgres:Postgresql123@localhost:5432/VetAPI"
+URL = "postgresql+psycopg2://postgres:Postgresql123@postgres:5432/VetAPI"
 
 engine = create_engine(URL)
 
