@@ -78,5 +78,5 @@ jobs:
       - name: Build and push Docker image
         run: |
           cd API
-          docker build -t makslem/fastapi-app:latest .
-          docker push makslem/fastapi-app:latest
+          docker build -t makslem/api-k8s:latest .
+          docker push makslem/api-k8s:latest
