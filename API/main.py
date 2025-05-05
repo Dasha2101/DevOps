@@ -51,7 +51,7 @@ async def root():
     return {"message": "API for veterinary clinic. Go to /docs or /redoc to find out more"}
 
 
-@app.post("/register/", response_model=RegUser)
+@app.post("/register", response_model=RegUser)
 async def register(user: RegUser, db: Session = Depends(get_db)):
     db_user = get_user(user.username, db)
     if db_user:
@@ -62,7 +62,7 @@ async def register(user: RegUser, db: Session = Depends(get_db)):
     return create_user(user, db)
 
 
-@app.post("/auth/", response_model=TokenResponse)
+@app.post("/auth", response_model=TokenResponse)
 async def auth(user: AuthUser, db: Session = Depends(get_db)):
     db_user = auth_user(user, db)
     if not db_user:
@@ -72,7 +72,7 @@ async def auth(user: AuthUser, db: Session = Depends(get_db)):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@app.get("/auth/", response_model=GetUser)
+@app.get("/auth", response_model=GetUser)
 async def status_auth(user: GetUser = Depends(get_current_user)):
     """
     Send in headaers:
@@ -92,13 +92,13 @@ async def status_auth(user: GetUser = Depends(get_current_user)):
     return user
 
 
-@app.get("/animal_type/", response_model=List[AnimalResponse])
+@app.get("/animal_type", response_model=List[AnimalResponse])
 async def animal_type(user: GetUser = Depends(get_current_user), db: Session = Depends(get_db)):
     db_animal = db.query(AnimalType).order_by(AnimalType.id).all()
     return db_animal
 
 
-@app.get("/report/", response_model=List[GetReport])
+@app.get("/report", response_model=List[GetReport])
 async def get_report(user: GetUser = Depends(get_current_user), db: Session = Depends(get_db)):
     db_report = db.query(
         Report.id,
@@ -111,17 +111,17 @@ async def get_report(user: GetUser = Depends(get_current_user), db: Session = De
     return db_report
 
 
-@app.post("/report/", response_model=CreateReport)
+@app.post("/report", response_model=CreateReport)
 async def post_report(data: CreateReport, user: GetUser = Depends(get_current_user), db: Session = Depends(get_db)):
     return create_report(data, db)
 
 
-@app.put("/report/", response_model=PutReport)
+@app.put("/report", response_model=PutReport)
 async def put_report(data: PutReport, user: GetUser = Depends(get_current_user), db: Session = Depends(get_db)):
     return change_report(data, db)
 
 
-@app.delete("/report/", response_model=Message)
+@app.delete("/report", response_model=Message)
 async def delete_report(data: DeleteReport, user: GetUser = Depends(get_current_user), db: Session = Depends(get_db)):
     db_report = db.query(Report).filter(Report.id == data.id).first()
     if not db_report:
