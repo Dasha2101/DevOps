@@ -52,3 +52,20 @@ jobs:
         run: |
           cd Front
           npx vitest run --coverage
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: docker login -u makslem -p Makc505450
+
+      - name: Build and push Docker image
+        run: |
+          cd Front
+          docker build -t makslem/frontend-k8s:latest .
+          docker push makslem/frontend-k8s:latest

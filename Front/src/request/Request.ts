@@ -9,8 +9,13 @@ export interface PetUpdateData {
 
 export class ApiClient {
   private baseUrl: string;
+  /*
+  constructor(baseUrl: string = (window as any).env?.VITE_API_URL || 'http://localhost:8000') {
+    this.baseUrl = baseUrl;
+  }
+  */
 
-  constructor(baseUrl: string = import.meta.env.VITE_API_URL || 'http://localhost:8000') {
+  constructor(baseUrl: string = '/api') {
     this.baseUrl = baseUrl;
   }
 
