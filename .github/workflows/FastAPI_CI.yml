@@ -62,9 +62,41 @@ jobs:
       - name: Run tests
         run: |
           cd API
-          pytest --cov=main --cov=crud --cov-report=term test.py
+          pytest --cov=main --cov=crud --cov-report=term --cov-report=xml:coverage.xml test.py
+      
+      - name: Save coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: API/coverage.xml
 
-  docker:
+  
+  security check:
+  runs-on: ubuntu-latest
+  needs: test
+
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Download coverage report
+      uses: actions/download-artifact@v3
+      with:
+        name: coverage-report
+        path: API/
+
+    - name: Download and setup SonarScanner
+      run: |
+        wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+        unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+        mv sonar-scanner-5.0.1.3006-linux sonar-scanner
+        echo "::add-path::$(pwd)/sonar-scanner/bin"
+
+    - name: Run SonarScanner
+      run: |
+        sonar-scanner
+
+  create image:
     runs-on: ubuntu-latest
     needs: test
 
