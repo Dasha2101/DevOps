@@ -59,16 +59,10 @@ jobs:
           pip install -r requirements.txt
           pip install pytest-cov
 
-      - name: Run tests with coverage xml report
+      - name: Run tests
         run: |
           cd API
-          pytest --cov=main --cov=crud --cov-report=term --cov-report=xml:coverage.xml test.py
-      
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: API/coverage.xml
+          pytest --cov=main --cov=crud --cov-report=term test.py
 
   security-check:
     runs-on: ubuntu-latest
@@ -77,12 +71,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Download coverage report
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-report
-          path: API/
 
       - name: Download and setup SonarScanner
         run: |
