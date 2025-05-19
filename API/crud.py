@@ -11,6 +11,8 @@ from database import get_db
 from models import User, AnimalType, Report
 from schemas import *
 
+from telegram import send_telegram_message
+
 
 def create_user(user: RegUser, db: Session):
     hash_password = bcrypt.hashpw(user.password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
@@ -132,4 +134,5 @@ def change_report(data: PutReport, db: Session):
     db.commit()
     db.refresh(db_report)
     db_report.pet = db_pet.animal
+    send_telegram_message(f"Отчет с ID {data.id} был обновлен")
     return db_report
