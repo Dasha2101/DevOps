@@ -115,7 +115,7 @@ async def get_report(user: GetUser = Depends(get_current_user), db: Session = De
 
 @app.post("/report", response_model=CreateReport)
 async def post_report(data: CreateReport, user: GetUser = Depends(get_current_user), db: Session = Depends(get_db)):
-    send_telegram_message(f"Добавлен новый отчет:\nВладелец: {data.owner}\nКличка питомца: {data.pet_name}\nПитомец: {data.pet}\nДата: {data.date}\nВремя: {data.time}")
+    send_telegram_message(f"Добавлен новый отчет\nВладелец: {data.owner}\nКличка питомца: {data.pet_name}\nПитомец: {data.pet}\nДата: {data.date}\nВремя: {data.time}")
     return create_report(data, db)
 
 
