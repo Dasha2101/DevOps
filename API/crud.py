@@ -134,5 +134,4 @@ def change_report(data: PutReport, db: Session):
     db.commit()
     db.refresh(db_report)
     db_report.pet = db_pet.animal
-    send_telegram_message(f"Отчет с ID {data.id} был обновлен")
     return db_report

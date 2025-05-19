@@ -121,14 +121,16 @@ async def post_report(data: CreateReport, user: GetUser = Depends(get_current_us
 
 @app.put("/report", response_model=PutReport)
 async def put_report(data: PutReport, user: GetUser = Depends(get_current_user), db: Session = Depends(get_db)):
-    return create_report(data, db)
+    result = change_report(data, db)
+    send_telegram_message(f"Отчет с ID {data.id} был обновлен")
+    return result
 
 
 @app.delete("/report", response_model=Message)
 async def delete_report(data: DeleteReport, user: GetUser = Depends(get_current_user), db: Session = Depends(get_db)):
     db_report = db.query(Report).filter(Report.id == data.id).first()
     if not db_report:
-        send_telegram_message(f"Отчет с ID {data.id} попытались удалить")
+        send_telegram_message(f"Попытка удалить несуществующий отчёт с ID: {data.id}")
         raise HTTPException(status_code=404, detail="Report not found")
 
     db.delete(db_report)
