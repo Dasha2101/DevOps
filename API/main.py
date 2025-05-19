@@ -11,6 +11,8 @@ from models import AnimalType, Report
 from schemas import *
 from crud import *
 
+from telegram import send_telegram_message
+
 
 app = FastAPI()
 
@@ -113,12 +115,15 @@ async def get_report(user: GetUser = Depends(get_current_user), db: Session = De
 
 @app.post("/report", response_model=CreateReport)
 async def post_report(data: CreateReport, user: GetUser = Depends(get_current_user), db: Session = Depends(get_db)):
+    send_telegram_message(f"Добавлен новый отчет:\nВладелец: {data.owner}\nКличка питомца: {data.pet_name}\nПитомец: {data.pet}\nДата: {data.date}\nВремя: {data.time}")
     return create_report(data, db)
 
 
 @app.put("/report", response_model=PutReport)
 async def put_report(data: PutReport, user: GetUser = Depends(get_current_user), db: Session = Depends(get_db)):
-    return change_report(data, db)
+    result = create_report(data, db)
+    send_telegram_message(f"Отчет с ID {data.id} был обновлен")
+    return result
 
 
 @app.delete("/report", response_model=Message)
@@ -129,4 +134,5 @@ async def delete_report(data: DeleteReport, user: GetUser = Depends(get_current_
 
     db.delete(db_report)
     db.commit()
+    send_telegram_message(f"Отчет с ID {data.id} был удален")
     return {"message": "The report was successfully deleted"}
