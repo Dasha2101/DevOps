@@ -108,5 +108,28 @@ jobs:
       - name: Build and push Docker image
         run: |
           cd API
-          docker build -t makslem/api-k8s:latest .
-          docker push makslem/api-k8s:latest
+          docker build -t makslem/api-k8s:${{ github.sha }} .
+          docker push makslem/api-k8s:${{ github.sha }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: create-image
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+        
+      - name: Replace image tag in manifest
+        run: |
+          sed -i "s|makslem/api-k8s:<TAG>|makslem/api-k8s:${{ github.sha }}|g" k8s/api.yaml
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f k8s/postgres.yaml
+          kubectl apply -f k8s/api.yaml
+          kubectl apply -f k8s/api-hpa.yaml

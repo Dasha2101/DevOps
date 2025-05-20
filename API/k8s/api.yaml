@@ -14,14 +14,14 @@ spec:
     spec:
       initContainers:
       - name: alembic-migrate
-        image: makslem/api-k8s:latest
+        image: makslem/api-k8s:<TAG>
         command: ["sh", "-c", "alembic upgrade head"]
         env:
         - name: DATABASE_URL
           value: postgresql://postgres:Postgresql123@postgres:5432/VetAPI
       containers:
       - name: api
-        image: makslem/api-k8s:latest
+        image: makslem/api-k8s:<TAG>
         ports:
         - containerPort: 8000
         env:
