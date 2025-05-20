@@ -92,8 +92,7 @@ jobs:
           echo "$(pwd)/sonar-scanner/bin" >> $GITHUB_PATH
 
       - name: Run SonarScanner
-        run: |
-          sonar-scanner
+        run: sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
   create-image:
     runs-on: ubuntu-latest
@@ -104,7 +103,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
-        run: docker login -u makslem -p Makc505450
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build and push Docker image
         run: |
