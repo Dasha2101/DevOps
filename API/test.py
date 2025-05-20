@@ -403,3 +403,5 @@ def test_delete_report__Not_authenticated(client):
     response = client.request("DELETE", "/report", json=json)
     assert response.status_code == 401
     assert response.json() == {"detail": "Not authenticated"}
+
+# :)
