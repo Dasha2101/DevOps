@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: makslem/api-k8s:<TAG>
+        image: makslem/frontend-k8s:<TAG>
         ports:
         - containerPort: 80
         command: ["nginx", "-g", "daemon off;"]
