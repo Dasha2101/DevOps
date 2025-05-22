@@ -115,7 +115,7 @@ jobs:
         
       - name: Replace image tag in manifest
         run: |
-          sed -i "s|makslem/api-k8s:<TAG>|makslem/frontend-k8s:${{ github.sha }}|g" k8s/frontend.yaml
+          sed -i "s|makslem/frontend-k8s:<TAG>|makslem/frontend-k8s:${{ github.sha }}|g" k8s/frontend.yaml
 
       - name: Deploy to Kubernetes
         run: |
